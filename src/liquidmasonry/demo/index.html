@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Liquid Masonry Demo</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="../import.min.js"></script>
+
+</head>
+<body>
+
+<div class="container">
+<div class="masonry">
+    <div class="items" data-col-width="2">1</div>
+    <div class="items">2</div>
+    <div class="items">3</div>
+    <div class="items">4</div>
+    <div class="items" data-col-width="2">5</div>
+    <div class="items">6</div>
+    <div class="items">7</div>
+    <div class="items">8</div>
+    <div class="items">9</div>
+    <div class="items">10</div>
+</div>
+</div>
+
+
+<script>
+window.addEventListener('load', function() {
+    var msnry = new LiquidMasonry({
+        containerSelector: ".masonry",
+        itemSelector: ".items",
+        minGap: 20, maxGap: 20,
+        brakePoints: [
+            {
+                brakePoint: 600,
+                grid: 3,
+                // marginX: 0.01, marginY: 0.01
+            },
+            {
+                brakePoint: 800,
+                grid: 4,
+                gapRatioX: 0.02, gapRatioY: 0.02
+            },
+            {
+                brakePoint: 1000,
+                grid: { itemMinWidth: 300, itemMaxWidth: 400 },
+                gapRatioX: 0.01, gapRatioY: 0.01
+            }
+        ],
+        debug: true
+    });
+
+    // Demo : 3秒ごとにランダムな要素の高さを変更
+    setInterval(function() {
+        var items = document.querySelectorAll('.items');
+        var item = items[Math.floor(Math.random() * items.length)];
+        // 100〜500のランダムな高さを設定
+        var height = Math.floor(Math.random() * 400) + 100;
+        item.style.height = height + 'px';
+    }, 3000);c
+});
+</script>
+</body>
+</html>
