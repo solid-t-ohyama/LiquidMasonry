@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function() {
 - **gapMin**: アイテム間の最小ギャップ。
 - **gapMax**: アイテム間の最大ギャップ。
 - **initialStyle**: コンテナとアイテムに必須のスタイル（`position:relative/absolute`）を適用するかどうか。
+- **onInitialized**: 初期化時に実行するコールバック関数。
+- **onUpdate**: レイアウトが更新された際に実行するコールバック関数。
 - **debug**: デバッグモードを有効にして、コンソールにレイアウト計算のログを出力します。
 
 #### brakePoints オプション

@@ -11,6 +11,8 @@
                 gapMin: 10,
                 gapMax: 30,
                 initialStyle: true,
+                onInitialized: null,
+                onUpdate: null,
                 debug: false
             };
             this.cardSetting = null;
@@ -41,6 +43,7 @@
             this.monitorImageLoad();
             this.monitorItemResize();
             this.container.classList.add("masonry-initialized");
+            if (typeof this.options.onInitialized === "function") this.options.onInitialized;
         }
         LiquidMasonry.prototype.init = function() {
             this.setContainerWidth();
@@ -52,6 +55,7 @@
             this.setBrakePointSettings();
             this.setCardSizes();
             this.display();
+            if (typeof this.options.onUpdate === "function") this.options.onUpdate;
         };
         LiquidMasonry.prototype.monitorImageLoad = function() {
             var _this = this;
