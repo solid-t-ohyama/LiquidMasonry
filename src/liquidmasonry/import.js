@@ -3,18 +3,6 @@
     var LiquidMasonry = function() {
         function LiquidMasonry(options) {
             var _this = this;
-            this.defaults = {
-                containerSelector: ".masonry",
-                itemSelector: ".items",
-                brakePoints: [],
-                brakeTargetSelector: "window",
-                gapMin: 10,
-                gapMax: 30,
-                initialStyle: true,
-                onInitialized: null,
-                onUpdate: null,
-                debug: false
-            };
             this.cardSetting = null;
             this.breakWidth = 0;
             this.containerWidth = 0;
@@ -23,10 +11,14 @@
             this.gapV = 0;
             this.gapH = 0;
             this.debug = false;
-            this.options = Object.assign(this.defaults, options);
-            this.container = document.querySelector(this.options.containerSelector);
-            if (!this.container) throw new Error("container is not found");
-            this.items = document.querySelectorAll(this.options.itemSelector);
+            this.options = Object.assign(LiquidMasonry.defaults, options);
+            if (this.options.containerSelector instanceof HTMLElement) {
+                this.container = this.options.containerSelector;
+            } else {
+                this.container = document.querySelector(this.options.containerSelector);
+                if (!this.container) throw new Error("container is not found");
+            }
+            this.items = this.container.querySelectorAll(this.options.itemSelector);
             if (this.options.brakeTargetSelector === "window") {
                 this.brakeTarget = window;
             } else {
@@ -45,6 +37,28 @@
             this.container.classList.add("masonry-initialized");
             if (typeof this.options.onInitialized === "function") this.options.onInitialized;
         }
+        LiquidMasonry.create = function(options) {
+            var o = Object.assign(LiquidMasonry.defaults, options);
+            try {
+                if (o.containerSelector instanceof HTMLElement) {
+                    return [ new LiquidMasonry(o) ];
+                } else {
+                    var containers = document.querySelectorAll(o.containerSelector);
+                    if (!containers || containers.length == 0) return [];
+                    var instances_1 = [];
+                    containers.forEach((function(container, index) {
+                        var option = Object.assign({}, o);
+                        option.brakePoints = JSON.parse(JSON.stringify(o.brakePoints));
+                        option.containerSelector = container;
+                        instances_1.push(new LiquidMasonry(option));
+                    }));
+                    return instances_1;
+                }
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        };
         LiquidMasonry.prototype.init = function() {
             this.setContainerWidth();
             this.setBrakePointSettings();
@@ -263,6 +277,18 @@
                 itemWidth,
                 margin
             };
+        };
+        LiquidMasonry.defaults = {
+            containerSelector: ".masonry",
+            itemSelector: ".items",
+            brakePoints: [],
+            brakeTargetSelector: "window",
+            gapMin: 10,
+            gapMax: 30,
+            initialStyle: true,
+            onInitialized: null,
+            onUpdate: null,
+            debug: false
         };
         return LiquidMasonry;
     }();
